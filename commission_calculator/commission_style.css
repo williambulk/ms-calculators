@@ -1,0 +1,76 @@
+.commission-calculator {
+	background: #9BB9D2;
+	padding: 20px;
+    border-radius: 15px;
+    max-width: 100%;
+    margin: 25px auto;
+}
+
+.commission-calculator select {
+	display: block;
+	width: 100%;
+	border-radius: 5px;
+}
+
+.commission-calculator form input {
+	width: fill-available;
+	width: -moz-available;
+	width: -webkit-fill-available;
+	border: 1px solid #e4e4e4;
+    padding: 8px 15px !important;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 0px !important;
+    color: #666666;
+}
+
+.commission-calculator h1 {
+	color: #ffffff;
+    background: #243443;
+    padding: 12px;
+    border-radius: 7px;
+	font-size: 36px;
+	text-align: center;
+	margin: 0 0 20px;
+}
+
+.commission-calculator p {
+	font-size: 20px;
+    line-height: 1.25em;
+	padding: 0;
+	margin: 0 0 20px;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.commission-fields {
+	display: block;
+	position: relative;
+}
+
+.commission-calculator form .commission-fields label {
+    color: #FFFFFF;
+    text-align: left;
+    float: left;
+}
+
+#commissionPurchasePrice, #cc-sellerCommission, #cc-buyerCommission, #cc-fullGst, #cc-totals {
+	width: fill-available;
+	width: -moz-available;
+	width: -webkit-fill-available;
+	margin: 5px auto 20px;
+	color: #FFFFFF;
+	font-weight:bold;
+}
+
+#purchasePriceInput{
+	font-weight:bold;
+}
+
+.commission-calculator .disclaimer {
+	margin-top: 20px;
+}
+
+.commission-calculator .disclaimer p {
+	font-size: 12px;
+}
