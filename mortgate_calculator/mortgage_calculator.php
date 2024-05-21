@@ -41,7 +41,7 @@ function mortgage_calculator() {
             </div>
             <div class="mortgageQuestion">
                 <label for="loanTerm"><strong>Loan Term (Years):</strong></label>
-                <input type="number" id="loanTerm" value="40" placeholder="e.g. 25" required>
+                <input type="number" id="loanTerm" placeholder="e.g. 25" required>
             </div>
             <div class="mortgageQuestion">
                 <label for="interestType">Interest Type:</label>
