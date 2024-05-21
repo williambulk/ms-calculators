@@ -43,10 +43,10 @@ function mortgage_calculator() {
                 <label for="loanTerm"><strong>Loan Term (Years):</strong></label>
                 <input type="number" id="loanTerm" placeholder="e.g. 25" required>
             </div>
-            <div class="mortgageQuestion">
+            <div class="mortgageQuestion hidden">
                 <label for="interestType">Interest Type:</label>
                 <select id="interestType">
-                    <option value="fixed">Fixed</option>
+                    <option value="fixed" selected>Fixed</option>
                     <option value="adjustable">Adjustable</option>
                 </select>
             </div>
