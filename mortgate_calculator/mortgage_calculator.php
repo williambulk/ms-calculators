@@ -40,7 +40,7 @@ function mortgage_calculator() {
                 <input type="number" id="interestRate" step="0.01" placeholder="e.g. 3.5%" required>
             </div>
             <div class="mortgageQuestion">
-                <label for="loanTerm"><strong>Loan Term (Years):</strong></label>
+                <label for="loanTerm"><strong>Select Length of Term:</strong></label>
                 <select id="loanTerm" required>
                     <option value="15">15 years</option>
                     <option value="20">20 years</option>
