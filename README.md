@@ -1,5 +1,8 @@
-# Real Estate Commission Calculator #
+# Real Estate Calculators #
 A JavaScript-based tool for calculating real estate commissions, GST, and net amounts for real estate transactions. This calculator is tailored to the Vancouver real estate market, using specific commission rates for sellers' agents and buyers' agents.
+
+# Where is it used? #
+Since the client needed a standalone plugin for WordPress, I have built 4 different calculators where the client can use on the sites he needs.
 
 # Features #
 - Dynamic Input Handling: Real-time updates as users input the purchase price.
