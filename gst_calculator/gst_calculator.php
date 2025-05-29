@@ -51,7 +51,7 @@ function gst_calculator() {
                     <input id="purchasePriceInput" type="text" class="purchasePrice" placeholder="Enter Property Price Here">
                 </div>
 				<div id="fullGstDiv">
-					<label><strong>GST to pay at the time of purchase:</strong></label>
+					<label><strong>Full GST (before rebate):</strong></label>
 					<input type="text" disabled="disabled" class="gst" id="GstCalcfullGst" placeholder="$CAD">
 				</div>
 				<div id="gst">
