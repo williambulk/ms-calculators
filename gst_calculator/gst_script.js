@@ -3,50 +3,56 @@ var gstResult = document.getElementById("gstAmount");
 var totalResult = document.getElementById("totalAmount");
 
 var purchasePriceMask = IMask(purchasePriceInput, {
-  mask: "CA$ num",
-  blocks: {
-    num: {
-      mask: Number,
-      thousandsSeparator: ",",
-      radix: ".",
-    },
-  },
+	mask: "CA$ num",
+	blocks: {
+		num: {
+			mask: Number,
+			thousandsSeparator: ",",
+			radix: ".",
+		},
+	},
 });
 
 purchasePriceInput.addEventListener("input", function () {
-  updateResult();
+	updateResult();
 });
 
 function calculateGST() {
-  var purchasePrice = +purchasePriceMask.unmaskedValue;
-  var isnewhome = document.getElementById("newhome").value;
-  var isfirsttime = document.getElementById("firsttime").value;
+	var purchasePrice = +purchasePriceMask.unmaskedValue;
+	var isnewhome = document.getElementById("newhome").value;
+	var isfirsttime = document.getElementById("firsttime").value;
 
-  var gst = 0;
-  var GstCalcfullGst = 0;
-  var totals = purchasePrice;
+	var gst = 0;
+	var GstCalcfullGst = 0;
+	var rebateAmount = 0;
+	var totals = purchasePrice;
 
-  if (isnewhome === "Yes" && isfirsttime === "Yes") {
-    gst = purchasePrice * 0.05;
-    GstCalcfullGst = gst;
-    totals += gst;
+	if (isnewhome === "Yes" && isfirsttime === "Yes") {
+		GstCalcfullGst = purchasePrice * 0.05; // base GST before rebate
 
-    // Apply rebate rules
-    if (purchasePrice <= 350000) {
-      gst *= 0.36;
-    } else if (purchasePrice > 350000 && purchasePrice < 450000) {
-      var rebate = 6300 * (450000 - purchasePrice) / 100000;
-      gst -= rebate;
-    } else if (purchasePrice => 450000) {
-      gst = 0;
-    }
-  }
+		if (purchasePrice <= 1000000) {
+			// Full rebate
+			rebateAmount = GstCalcfullGst;
+			gst = 0;
+		} else if (purchasePrice > 1000000 && purchasePrice < 1500000) {
+			// Linear rebate phase-out
+			var rebatePercent = (1500000 - purchasePrice) / 500000;
+			rebateAmount = GstCalcfullGst * rebatePercent;
+			gst = GstCalcfullGst - rebateAmount;
+		} else {
+			// No rebate
+			gst = GstCalcfullGst;
+		}
 
-  return {
-    gst: gst,
-    GstCalcfullGst: GstCalcfullGst,
-    totals: (totals - gst),
-  };
+		totals += gst;
+	}
+
+	return {
+		gst: gst,
+		GstCalcfullGst: GstCalcfullGst,
+		totals: totals,
+		rebateAmount: rebateAmount,
+	};
 }
 
 var purchasePriceInput = document.getElementById("purchasePriceInput");
@@ -54,41 +60,41 @@ var gstResult = document.getElementById("gstAmount");
 var totalResult = document.getElementById("totalAmount");
 
 var purchasePriceMask = IMask(purchasePriceInput, {
-  mask: "CA$ num",
-  blocks: {
-    num: {
-      mask: Number,
-      thousandsSeparator: ",",
-      radix: ".",
-    },
-  },
+	mask: "CA$ num",
+	blocks: {
+		num: {
+			mask: Number,
+			thousandsSeparator: ",",
+			radix: ".",
+		},
+	},
 });
 
 purchasePriceInput.addEventListener("input", function () {
-  updateResult();
+	updateResult();
 });
 
 function updateResult() {
-  var calculatedValues = calculateGST();
-  var gst = calculatedValues.gst;
-  var GstCalcfullGst = calculatedValues.GstCalcfullGst;
-  var totals = calculatedValues.totals;
+	var calculatedValues = calculateGST();
+	var gst = calculatedValues.gst;
+	var GstCalcfullGst = calculatedValues.GstCalcfullGst;
+	var totals = calculatedValues.totals;
 
-  gstResult.value = new Intl.NumberFormat(undefined, {
-    style: "currency",
-    currency: "CAD",
-  }).format(gst);
+	gstResult.value = new Intl.NumberFormat(undefined, {
+		style: "currency",
+		currency: "CAD",
+	}).format(gst);
 
-  var GstCalcfullGstElement = document.getElementById("GstCalcfullGst");
-  GstCalcfullGstElement.value = new Intl.NumberFormat(undefined, {
-    style: "currency",
-    currency: "CAD",
-  }).format(GstCalcfullGst);
+	var GstCalcfullGstElement = document.getElementById("GstCalcfullGst");
+	GstCalcfullGstElement.value = new Intl.NumberFormat(undefined, {
+		style: "currency",
+		currency: "CAD",
+	}).format(GstCalcfullGst);
 
-  totalResult.value = new Intl.NumberFormat(undefined, {
-    style: "currency",
-    currency: "CAD",
-  }).format(totals);
+	totalResult.value = new Intl.NumberFormat(undefined, {
+		style: "currency",
+		currency: "CAD",
+	}).format(totals);
 }
 
 updateResult();
