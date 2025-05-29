@@ -9,20 +9,39 @@ Author: Line49
 // Enqueue script and style
 add_action('wp_enqueue_scripts', 'gst_enqueue_scripts');
 function gst_enqueue_scripts() {
-    // Enqueue the JavaScript file
-    wp_enqueue_script('gst_script', plugins_url('gst_script.js', __FILE__), array(), '1.0', true);
-
     // Enqueue the CSS file
     wp_enqueue_style('gst_styles', plugin_dir_url(__FILE__) . 'gst_styles.css', array(), '1.0');
 }
-// Enqueue external JS file
-add_action('wp_enqueue_scripts', 'gst_enqueue_external_js');
-function gst_enqueue_external_js() {
-    // Check if imask.js is not already registered
-    if (!wp_script_is('commission_external_js', 'registered')) {
-        // Enqueue imask.js
-        wp_enqueue_script('commission_external_js', plugins_url('vendor/imask.js', __FILE__), array(), '1.0', true);
-    }
+
+// Enqueue IMask library and main script
+add_action('wp_enqueue_scripts', 'gst_enqueue_js');
+function gst_enqueue_js() {
+    // First try to load IMask from CDN with high priority
+    wp_enqueue_script('imask_library', 'https://unpkg.com/imask@6.4.3/dist/imask.min.js', array(), '6.4.3', true);
+    
+    // Then load our script that depends on IMask
+    wp_enqueue_script('gst_script', plugins_url('gst_script.js', __FILE__), array('imask_library'), '1.0', true);
+    
+    // Add inline script to check if IMask loaded and provide fallback
+    wp_add_inline_script('gst_script', '
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof IMask === "undefined") {
+                console.log("IMask not loaded from CDN, trying fallback");
+                var script = document.createElement("script");
+                script.src = "' . plugins_url('vendor/imask.js', __FILE__) . '";
+                script.onload = function() {
+                    console.log("Local IMask loaded successfully");
+                    // Reinitialize your script
+                    if (typeof initGSTCalculator === "function") {
+                        initGSTCalculator();
+                    }
+                };
+                document.head.appendChild(script);
+            } else {
+                console.log("IMask loaded successfully from CDN");
+            }
+        });
+    ', 'after');
 }
 
 // Shortcode callback function
@@ -50,11 +69,11 @@ function gst_calculator() {
                     <label><strong>Purchase Price:</strong></label>
                     <input id="purchasePriceInput" type="text" class="purchasePrice" placeholder="Enter Property Price Here">
                 </div>
-				<div id="fullGstDiv">
-					<label><strong>Full GST (before rebate):</strong></label>
-					<input type="text" disabled="disabled" class="gst" id="GstCalcfullGst" placeholder="$CAD">
-				</div>
-				<div id="gst">
+                <div id="fullGstDiv">
+                    <label><strong>Full GST (before rebate):</strong></label>
+                    <input type="text" disabled="disabled" class="gst" id="GstCalcfullGst" placeholder="$CAD">
+                </div>
+                <div id="gst">
                     <label><strong>GST Rebate:</strong></label>
                     <input type="text" disabled="disabled" class="gst" id="gstAmount" placeholder="$CAD">
                 </div>
