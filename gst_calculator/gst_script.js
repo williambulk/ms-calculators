@@ -27,24 +27,28 @@ function calculateGST() {
 	var rebateAmount = 0;
 	var totals = purchasePrice;
 
-	if (isnewhome === "Yes" && isfirsttime === "Yes") {
-		GstCalcfullGst = purchasePrice * 0.05; // base GST before rebate
+	if (isnewhome === "yes") {
+		GstCalcfullGst = purchasePrice * 0.05;
 
-		if (purchasePrice <= 1000000) {
-			// Full rebate
-			rebateAmount = GstCalcfullGst;
-			gst = 0;
-		} else if (purchasePrice > 1000000 && purchasePrice < 1500000) {
-			// Linear rebate phase-out
-			var rebatePercent = (1500000 - purchasePrice) / 500000;
-			rebateAmount = GstCalcfullGst * rebatePercent;
-			gst = GstCalcfullGst - rebateAmount;
+		if (isfirsttime === "yes") {
+			if (purchasePrice <= 1000000) {
+				rebateAmount = GstCalcfullGst;
+				gst = 0;
+			} else if (purchasePrice < 1500000) {
+				const rebatePercent = (1500000 - purchasePrice) / 500000;
+				rebateAmount = GstCalcfullGst * rebatePercent;
+				gst = GstCalcfullGst - rebateAmount;
+			} else {
+				rebateAmount = 0;
+				gst = GstCalcfullGst;
+			}
 		} else {
-			// No rebate
+			// Not a first-time buyer: no rebate
+			rebateAmount = 0;
 			gst = GstCalcfullGst;
 		}
 
-		totals += gst;
+		totals = purchasePrice + gst; // ✅ always add GST after rebate
 	}
 
 	return {
@@ -58,6 +62,10 @@ function calculateGST() {
 var purchasePriceInput = document.getElementById("purchasePriceInput");
 var gstResult = document.getElementById("gstAmount");
 var totalResult = document.getElementById("totalAmount");
+var rebateField = document.getElementById("gstAmount");
+var gstAfterRebateField = document.getElementById("gstAfterRebate");
+rebateField.value = formatCurrency(rebateAmount);
+gstAfterRebateField.value = formatCurrency(gst);
 
 var purchasePriceMask = IMask(purchasePriceInput, {
 	mask: "CA$ num",
@@ -79,18 +87,30 @@ function updateResult() {
 	var gst = calculatedValues.gst;
 	var GstCalcfullGst = calculatedValues.GstCalcfullGst;
 	var totals = calculatedValues.totals;
+	var rebateAmount = calculatedValues.rebateAmount;
 
-	gstResult.value = new Intl.NumberFormat(undefined, {
-		style: "currency",
-		currency: "CAD",
-	}).format(gst);
-
+	// Format the GST (before rebate)
 	var GstCalcfullGstElement = document.getElementById("GstCalcfullGst");
 	GstCalcfullGstElement.value = new Intl.NumberFormat(undefined, {
 		style: "currency",
 		currency: "CAD",
 	}).format(GstCalcfullGst);
 
+	// Format the rebate amount
+	gstResult.value = new Intl.NumberFormat(undefined, {
+		style: "currency",
+		currency: "CAD",
+	}).format(rebateAmount);
+
+	// Format the GST after rebate (difference between full GST and rebate)
+	var gstAfterRebateField = document.getElementById("gstAfterRebate");
+	// Use the calculated gst value directly instead of calculating it again
+	gstAfterRebateField.value = new Intl.NumberFormat(undefined, {
+		style: "currency",
+		currency: "CAD",
+	}).format(gst);
+
+	// Format the total price
 	totalResult.value = new Intl.NumberFormat(undefined, {
 		style: "currency",
 		currency: "CAD",
