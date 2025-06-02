@@ -56,13 +56,13 @@ function gst_calculator() {
                 <div id="propertyinfo">
                     <label><strong>Is this a new home?</strong></label>
                     <select id="newhome">
-                        <option>Yes</option>
-                        <option>No</option>
+                        <option value="yes">Yes</option>
+                        <option value="no" selected>No</option>
                     </select>
                     <label><strong>Are you a first-time buyer?</strong></label>
                     <select id="firsttime">
-                        <option>Yes</option>
-                        <option>No</option>
+                        <option value="yes">Yes</option>
+                        <option value="no" selected>No</option>
                     </select>
                 </div>
                 <div id="purchasePrice">
@@ -70,15 +70,19 @@ function gst_calculator() {
                     <input id="purchasePriceInput" type="text" class="purchasePrice" placeholder="Enter Property Price Here">
                 </div>
                 <div id="fullGstDiv">
-                    <label><strong>Full GST (before rebate):</strong></label>
+                    <label><strong>GST (Before Rebate):</strong></label>
                     <input type="text" disabled="disabled" class="gst" id="GstCalcfullGst" placeholder="$CAD">
                 </div>
-                <div id="gst">
-                    <label><strong>GST Rebate:</strong></label>
-                    <input type="text" disabled="disabled" class="gst" id="gstAmount" placeholder="$CAD">
+                <div id="rebateAmount">
+                    <label><strong>First Time Home Buyer GST Rebate:</strong></label>
+                    <input type="text" disabled="disabled" class="rebate" id="gstAmount" placeholder="$CAD">
+                </div>
+                <div id="gstAfter">
+                    <label><strong>GST (After Rebate):</strong></label>
+                    <input type="text" disabled="disabled" class="gst" id="gstAfterRebate" placeholder="$CAD">
                 </div>
                 <div id="totals">
-                    <label><strong>Final Purchase Price including GST after Rebate:</strong></label>
+                    <label><strong>Final Purchase Price including GST:</strong></label>
                     <input type="text" disabled="disabled" class="gst" id="totalAmount" placeholder="$CAD">
                 </div>
                 
